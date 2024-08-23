@@ -20,7 +20,6 @@ systemctl enable multipathd.service
 
 ##########
 # metadata tunings; https://doc.beegfs.io/latest/advanced_topics/metadata_tuning.html
-
 ##########
 declare -a METADATA_DISKS=(sdX sdY)
 NUM_DISKS=${METADATA_DISKS[@]}
@@ -35,19 +34,13 @@ done
 ##########
 # data tunings; https://doc.beegfs.io/latest/advanced_topics/storage_tuning.html
 ##########
-for INDEX in {b..z}; do 
-	echo deadline > /sys/block/sd$INDEX/queue/scheduler
-	echo 4096 > /dev/sd$INDEX/queue/nr_requests
-	echo 4096 > /sys/block/sd$INDEX/queue/read_ahead_kb
-	echo 256 > /sys/block/sd$INDEX/queue/max_sectors_kb
+for INDEX in `seq 0 1 23`; do 
+	echo deadline > /sys/block/dm-$INDEX/queue/scheduler
+	echo 4096 > /sys/block/dm-$INDEX/queue/nr_requests
+	echo 4096 > /sys/block/dm-$INDEX/queue/read_ahead_kb
+	echo 256 > /sys/block/dm-$INDEX/queue/max_sectors_kb
 done
-for INDEX in {a..w}; do 
-	echo deadline > /sys/block/sda$INDEX/queue/scheduler
-	echo 4096 > /dev/sda$INDEX/queue/nr_requests
-	echo 4096 > /sys/block/sda$INDEX/queue/read_ahead_kb
-	echo 256 > /sys/block/sda$INDEX/queue/max_sectors_kb
-done
-echo 4194304 > /sys/modules/zfs/parameters/zfs_maxrecordsize
+echo 4194304 > /sys/module/zfs/parameters/zfs_maxrecordsize
 echo 1310720 > /sys/module/zfs/parameters/zfs_read_chunk_size
 echo 0 > /sys/module/zfs/parameters/zfs_prefetch_disable
 
@@ -74,7 +67,7 @@ m0_DEVS=""
 zpool create $ZFS_OPTIONS zpool-m0 mirror $m0_DEVS
 zpool set mountpoint=/mnt/zfs/zpool-m0 zpool-m0
 zfs create -o mountpoint=/mnt/zfs/zvol-m0 zpool-m0/data
-mkfs.ext4 -i 2048 -I 512 -J size=400 -Odir_index,filetype /mnt/zfs/zvol-m0 # BeeGFS tunings for metadata devices
+mkfs.ext4 -i 2048 -I 512 -J size=400 -Odir_index,filetype /mnt/zfs/zvol-m0 # BeeGFS tunings for filesystem(s) on metadata device(s)
 
 ##########
 # create data device(s)
