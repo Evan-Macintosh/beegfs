@@ -1,7 +1,7 @@
 ### Overview
 This is my silly little repo where I'm holding my BeeGFS related scripts in case I need them in the future. In it, you'll find my process for creating my super bare bones, hyper converged BeeGFS "cluster".
 
-### Why BeeGFS
+### BeeGFS vs. its competition
 Here were my alternatives and why I didn't pick them
 - GPFS
   - I don't currently have the servers required to support this in a way that I find acceptable (if I did this, I'd want at least 10 SSDs for the system tier and 60 disks for capacity tier)
@@ -26,3 +26,29 @@ Here were my alternatives and why I didn't pick them
    - It was the filesystem that helped Katie Bouman and her team generate the famous first picure of a black hole
    - In the future, I can enable RoCEv2 with extreme ease
    - Also in the future (I think), I can implement things like pacemaker/corosync
+
+
+### My current configuration
+My BeeGFS system looks like such
+```
++-- lcs-s1 -------------+
+| Xeon E5-4657L v2      |
+| 64GB DDR3 ECC         |
+|     10 GbE SFP+ NIC   +------> switch
+|                       +
+|          LSI 9207-8e  +
+|                       +------> +===============================+
+|                       |        | NetApp E2724 w/ 24x 900GB SAS |
+|          LSI 9207-8e  +------> +===============================+
+|                       +
+|    Team 256G SATA SSD |
+|    Team 256G SATA SSD |
++-----------------------+
+```
+
+### Future plans
+Uh, these are really far off, but
+1) I/O nodes be a pair of identical servers w/ ability to use U.2 disks for metadata and at least Skylake processors
+2) HA working across more than 1 I/O node (Buddy Groups at very least, maybe corosync/pacemaker? (this may require the know-how and maybe some engineering work))
+3) RoCEv2 capable hardware running at >=40GbE
+4) 1 or more DDN SS8460 shelves 
