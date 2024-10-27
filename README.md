@@ -7,7 +7,7 @@ Here were my alternatives and why I didn't pick them
   - I don't currently have the servers required to support this in a way that I find acceptable (if I did this, I'd want at least 10 SSDs for the system tier and 60 disks for capacity tier)
   - The community version doesn't allow a namespace over 12TB (without lobotomizing your install in a way I don't care to figure out at current moment (allegedly))
 - Lustre
-  - I'm not James Simmons 
+  - I'm neither James Simmons nor Oleg Drokin
 - MooseFS
   - really? next
 - GFS2
