@@ -31,23 +31,47 @@ Here were my alternatives and why I didn't pick them
 ### My current configuration
 My BeeGFS system looks like such
 ```
-+-- lcs-s1 -------------+
-| Xeon E5-4657L v2      |
++-- lcs-s1 -----------------+
+| 2x Xeon E5-2687W v4       |
+| 128GB DDR4 ECC            |
+|     LSI internal NVMe exp.|
+|                40 GbE CX4 +------> switch
+|                           +
+|                           |
+|                40 GbE CX4 +------> switch
+|                           +
+|                           |
+|  4x       HP 1TB SATA HDD |
+| 10x Micron 400GB SATA SSD |
+|  4x  Intel 1TB P4500 NVMe |
++---------------------------+
+```
+The BeeGFS system created for UWP looks like such
+```
+HP DL380+ Gen8
++-- cygnus1 ------------+
+| 2x Xeon E5-2630 v2    |
 | 64GB DDR3 ECC         |
-|     10 GbE SFP+ NIC   +------> switch
+|                       |
+|          LSI 9207-8e  +----------> +===============================+
+|                       +----------> | NetApp E2724                  |
+|     10 GbE SFP+ NIC   +--> switch  | 22x 900GB SAS  [0 -21]        |
+|                       +            |  2x 200GB SAS  [22-23]        |
+|                       X            |                               |
+|          LSI 9207-8e  +----------> |                               |
+|                       +----------> +===============================+
+|     10 GbE SFP+ NIC   +--> switch
 |                       +
-|          LSI 9207-8e  +
-|                       +------> +===============================+
-|                       |        | NetApp E2724 w/ 24x 900GB SAS |
-|          LSI 9207-8e  +------> +===============================+
-|                       +
-|    Team 256G SATA SSD |
-|    Team 256G SATA SSD |
+|                       X
 +-----------------------+
 ```
 
 ### Future plans
-Uh, these are really far off, but
+These are the closest term items, but will take some time 
+1) Enable RoCE v2
+2) Upgrade scratch node to something with 24 NVMe capabilities (Dell R7415; will cost upwards of $2500)
+
+these are really far off, but
 1) I/O nodes be a pair of identical servers w/ ability to use U.2 disks for metadata and at least Skylake processors
 2) HA working across more than 1 I/O node (Buddy Groups at very least, maybe corosync/pacemaker? (this may require the know-how and maybe some engineering work))
 3) RoCEv2 capable hardware running at >=40GbE
