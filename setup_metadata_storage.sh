@@ -1,5 +1,9 @@
 #!/bin/bash
 ##########
+### NOTE: THIS SCRIPT HAS BEEN DEPRECATED IN FAVOR OF create_zfs_{metadata,storage}.sh SCRIPTS
+##########
+
+##########
 ### misc. conventions
 ##########
 # things related to pools (name, mount point, etc) will use '_' to space out names
