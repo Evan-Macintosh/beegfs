@@ -18,6 +18,8 @@ Here were my alternatives and why I didn't pick them
   - Whether using Rook or "raw" Ceph, I've not had good luck getting it working. The former (IDR, I must've flushed that from my memory), the latter just doesn't seem to have excellent support and getting things properly hitting Ceph repos is a nightmare
   - The documentation on what Ceph does to your hardware (1 OSD per core, 1GB memory/TB disk) and what it doesn't allow you to do (multipath specifically) sounds very unappealing
   - The """""minimum viable system""""" is 3 (5?) nodes, which for my use case is obscene. It says you *can* get away with smaller, but I don't feel like poking that, especially given the above
+DAOS
+- I don't have loads of NVM based storage so this is currently impossible
 
  So why BeeGFS then?
    - The documentation is written in a way that I don't hate (it's written in plain English and is pleasant to read)
